@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>生日快乐</title>
+  <link rel="stylesheet" href="style.css?v=10" />
+</head>
+<body>
+  <div class="pages" id="pages">
+    <!-- 第一页 -->
+    <section class="page page-one">
+      <h1 class="birthday-title">生日快乐</h1>
+
+      <div class="slider" id="slider">
+        <div class="slider-fill"></div>
+        <button class="slider-thumb" id="slider-thumb" type="button" aria-label="拖动以解锁">
+          <svg class="thumb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <p class="unlock-hint">滑动解锁回忆</p>
+    </section>
+
+    <!-- 加载页：环形加载 + 数据恢复弹窗 -->
+    <section class="page page-loading">
+      <div class="loading-ring" aria-hidden="true">
+        <svg viewBox="0 0 100 100">
+          <circle class="ring-bg" cx="50" cy="50" r="42" />
+          <circle class="ring-fg" cx="50" cy="50" r="42" />
+        </svg>
+      </div>
+      <p class="loading-text">正在加载回忆</p>
+
+      <div class="restore-modal" id="restore-modal" aria-hidden="true">
+        <div class="restore-modal-box">
+          <p class="restore-msg">数据丢失，请根据步骤从备份数据恢复</p>
+          <button class="restore-btn" id="restore-btn" type="button">是</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 第二页 -->
+    <section class="page page-two">
+      <div class="game-list">
+        <div class="progress-line" aria-hidden="true"></div>
+        <div class="progress-fill" aria-hidden="true"></div>
+
+        <div class="game-row" data-level="1">
+          <span class="node" aria-hidden="true"></span>
+          <button class="game-btn" type="button" data-game="1">
+            <span class="game-label">数字华容道</span>
+            <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="11" width="14" height="9" rx="2" />
+              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="game-row is-locked" data-level="2">
+          <span class="node" aria-hidden="true"></span>
+          <button class="game-btn" type="button" data-game="2" disabled>
+            <span class="game-label">接note</span>
+            <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="11" width="14" height="9" rx="2" />
+              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="game-row is-locked" data-level="3">
+          <span class="node" aria-hidden="true"></span>
+          <button class="game-btn" type="button" data-game="3" disabled>
+            <span class="game-label">跳跃跑酷</span>
+            <svg class="lock-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="11" width="14" height="9" rx="2" />
+              <path d="M8 11V8a4 4 0 0 1 8 0v3" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <button class="stage-arrow stage-next" id="stage-next" type="button" aria-label="进入新页面">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+    </section>
+
+    <!-- 第三页：三关全部通关后进入 -->
+    <section class="page page-three">
+      <button class="stage-arrow stage-back" id="stage-back" type="button" aria-label="返回选关">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 15l6-6 6 6" />
+        </svg>
+      </button>
+
+      <div class="stage-text" id="stage-text"></div>
+    </section>
+  </div>
+
+  <!-- 游戏一：4×4 拼图 -->
+  <section class="game-screen" id="game-screen" aria-hidden="true">
+    <button class="back-btn" id="back-btn" type="button" aria-label="返回选关">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 5l-7 7 7 7" />
+      </svg>
+    </button>
+
+    <button class="solve-btn" id="solve-btn" type="button">快速完成</button>
+
+    <div class="board" id="board" aria-label="拼图棋盘">
+      <div class="tile finish-piece" aria-hidden="true"></div>
+    </div>
+    <p class="win-note">拼图完成！</p>
+  </section>
+
+  <!-- 游戏二：接球 -->
+  <section class="game-screen catch-screen" id="game-two" aria-hidden="true">
+    <button class="back-btn" id="back-two" type="button" aria-label="返回选关">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 5l-7 7 7 7" />
+      </svg>
+    </button>
+
+    <button class="solve-btn" id="solve-two" type="button">快速完成</button>
+
+    <p class="catch-hud" id="catch-score">接住 0 / 20</p>
+
+    <canvas class="catch-canvas" id="catch-canvas"></canvas>
+
+    <div class="catch-result" id="catch-result">
+      <p class="catch-result-text" id="catch-result-text"></p>
+      <button class="catch-retry" id="catch-retry" type="button">再试一次</button>
+    </div>
+  </section>
+
+  <!-- 游戏三：跳跃跑酷 -->
+  <section class="game-screen catch-screen" id="game-three" aria-hidden="true">
+    <button class="back-btn" id="back-three" type="button" aria-label="返回选关">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M15 5l-7 7 7 7" />
+      </svg>
+    </button>
+
+    <button class="solve-btn" id="solve-three" type="button">快速完成</button>
+
+    <div class="runner-progress" aria-hidden="true">
+      <span class="runner-progress-fill" id="runner-progress-fill"></span>
+    </div>
+
+    <canvas class="catch-canvas" id="runner-canvas"></canvas>
+
+    <div class="catch-result" id="runner-result">
+      <p class="catch-result-text" id="runner-result-text"></p>
+      <button class="catch-retry" id="runner-retry" type="button">再试一次</button>
+    </div>
+  </section>
+
+  <script src="script.js?v=23"></script>
+</body>
+</html>
